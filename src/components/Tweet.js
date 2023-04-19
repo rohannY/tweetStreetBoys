@@ -1,7 +1,9 @@
 import Nav from "./Nav";
 import { useCookies } from "react-cookie";
 import React, { useState, useEffect } from "react";
-import user from "../assets/user.png";
+import like from "../assets/Like.svg";
+import coment from "../assets/Comment.svg";
+import retweet from "../assets/Retweet.svg";
 import verified from "../assets/verified.svg";
 import chief from "../assets/cheif_tweet.svg";
 import { useSearchParams } from "react-router-dom";
@@ -13,9 +15,52 @@ const Tweet = () => {
   const [searchparams] = useSearchParams();
   const [tweet, setTweet] = useState({});
   const [comment, setComment] = useState({});
+  const [reply, setReply] = useState("");
   const [loading, setLoading] = useState(true);
-
   const id = searchparams.get("id");
+
+  const handleReply = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:7000/api/v1/tweet/${id}/comment`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ text: reply }),
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+ async function handleLike(){
+    try {
+      const response = await fetch(
+        `http://localhost:7000/api/v1/tweet/${id}/like`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({}),
+        }
+      );
+
+      const data = await response.json();
+      console.log(data);
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     const fetchTweet = async () => {
@@ -43,7 +88,7 @@ const Tweet = () => {
   return (
     <>
       <Nav />
-      <div className="h-screen grid grid-cols-12 text-white pb-10">
+      <div className="h-auto grid grid-cols-12 text-white pb-10">
         <div className="col-span-2 ml-10"></div>
         <div className="col-span-8 h-auto w-full px-10">
           {loading ? (
@@ -72,7 +117,10 @@ const Tweet = () => {
             <div className="bg-[#1B2730] w-auto p-10 rounded-2xl mx-auto">
               <div className="flex space-x-6 bg-[#1B2730] p-10 mt-5 w-full rounded-2xl flex-col">
                 <div className="flex w-full">
-                  <img src={tweet.owner.profile} className="h-14 w-14 rounded-full" />
+                  <img
+                    src={tweet.owner.profile}
+                    className="h-14 w-14 rounded-full"
+                  />
                   <div className="flex mx-4 space-y-1 flex-col">
                     <div className="flex">
                       <p className="font-inter text-xl">{tweet.owner.name}</p>
@@ -88,28 +136,39 @@ const Tweet = () => {
                   <p className="text-xl">{tweet.text}</p>
                 </div>
 
-                {/* <div className="px-10 pt-4 mb-5 flex space-x-5">
-                                    <div className=" flex space-x-3 cursor-pointer">
-                                        <img src={like} className=""/>
-                                        <p className="text-[#738A9E] font-satoshi">{tweet.likes.length}</p>
-                                    </div>
+                <div className="px-10 pt-4 mb-5 flex space-x-5">
+                  <div className=" flex space-x-3 cursor-pointer">
+                    <img src={like} className="" />
+                    <p
+                      className="text-[#738A9E] font-satoshi"
+                      onClick={() => handleLike()}
+                    >
+                      {tweet.likes.length}
+                    </p>
+                  </div>
 
-                                    <div className=" flex space-x-3">
-                                        <img src={comment} className=""/>
-                                        <p className="text-[#738A9E] font-satoshi">0</p>
-                                    </div>
+                  <div className=" flex space-x-3">
+                    <img src={coment} className="" />
+                    <p className="text-[#738A9E] font-satoshi">0</p>
+                  </div>
 
-                                    <div className=" flex space-x-3">
-                                        <img src={retweet} className=""/>
-                                        <p className="text-[#738A9E] font-satoshi">{tweet.retweets.length}</p>
-                                    </div>
-                                </div> */}
+                  <div className=" flex space-x-3">
+                    <img src={retweet} className="" />
+                    <p className="text-[#738A9E] font-satoshi">
+                      {tweet.retweets.length}
+                    </p>
+                  </div>
+                </div>
                 <div className="w-full px-12 my-5">
                   <textarea
                     className="h-28 w-full outline-none rounded-xl border border-gray-600 text-white bg-[#28343E] px-10 py-5 font-satoshi text-xl"
                     placeholder="Tweet Reply"
+                    onChange={(event) => setReply(event.target.value)}
                   ></textarea>
-                  <button className="px-6 py-2 bg-sky-600 font-satoshi text-2xl rounded-3xl absolute mt-8 -mx-36">
+                  <button
+                    className="px-6 py-2 bg-sky-600 font-satoshi text-2xl rounded-3xl absolute mt-8 -mx-36"
+                    onClick={handleReply}
+                  >
                     Reply
                   </button>
                 </div>
@@ -138,10 +197,13 @@ const Tweet = () => {
                   </div>
                 ) : (
                   comment.map((comment) => (
-                    <div className="px-12 w-full">
+                    <div className="px-12 w-full my-2">
                       <div className="flex space-x-6 bg-[#1B2730] p-10 rounded-2xl flex-col border border-gray-400">
                         <div className="flex w-full">
-                          <img src={comment.owner.profile} className="h-12 w-12 rounded-full" />
+                          <img
+                            src={comment.owner.profile}
+                            className="h-12 w-12 rounded-full"
+                          />
                           <div className="flex mx-4 my-3">
                             <p className="font-inter text-xl">
                               {comment.owner.name}

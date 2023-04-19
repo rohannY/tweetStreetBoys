@@ -2,25 +2,52 @@ import vector from "../assets/vector.svg";
 import twitter from "../assets/Twitter.svg";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState();
   const [email, setEmail] = useState();
   const [password, setPass] = useState();
-  const [cookie, setCookie] = useCookies(["user"]);
+  const [image, setImage] = useState(null);
 
-  const handleSubmit = (event) => {
+  const handleFileChange = (event) => {
+    setImage(event.target.files[0]);
+  };
+
+  const [cookie, setCookie] = useCookies(["user"]);
+  const navigate = useNavigate();
+
+  const name = fname.concat(" ", lname);
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const name = fname.concat(" ", lname);
+
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("profile", image);
+
     const requestOptions = {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: name, email: email, password: password }),
+      body: formData,
     };
-    fetch("http://localhost:7000/api/v1/auth/register", requestOptions)
-      .then((response) => response.json())
-      .then((data) => setCookie("userId", data.token, { path: "/" }));
+    try {
+      const response = await fetch(
+        "http://localhost:7000/api/v1/auth/register",
+        requestOptions
+      );
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+      }
+      const data = await response.json();
+      setCookie("userId", data.token, { path: "/" });
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -41,7 +68,7 @@ const SignUp = () => {
                 <div>
                   <div className="flex -mx-3">
                     <div className="w-1/2 px-3 mb-5">
-                      <label for="" className="text-xs font-semibold px-1">
+                      <label className="text-xs font-semibold px-1">
                         First name
                       </label>
                       <div className="flex">
@@ -57,7 +84,7 @@ const SignUp = () => {
                       </div>
                     </div>
                     <div className="w-1/2 px-3 mb-5">
-                      <label for="" className="text-xs font-semibold px-1">
+                      <label className="text-xs font-semibold px-1">
                         Last name
                       </label>
                       <div className="flex">
@@ -75,7 +102,7 @@ const SignUp = () => {
                   </div>
                   <div className="flex -mx-3">
                     <div className="w-full px-3 mb-5">
-                      <label for="" className="text-xs font-semibold px-1">
+                      <label className="text-xs font-semibold px-1">
                         Email
                       </label>
                       <div className="flex">
@@ -93,7 +120,7 @@ const SignUp = () => {
                   </div>
                   <div className="flex -mx-3">
                     <div className="w-full px-3 mb-5">
-                      <label for="" className="text-xs font-semibold px-1">
+                      <label className="text-xs font-semibold px-1">
                         Password
                       </label>
                       <div className="flex">
@@ -111,13 +138,16 @@ const SignUp = () => {
                   </div>
                   <div className="flex -mx-3">
                     <div className="w-full px-3  mb-12">
-                      <label for="" className="text-xs font-semibold px-1">
+                      <label className="text-xs font-semibold px-1">
                         Upload Profile Image
                       </label>
                       <div className="flex">
                         <input
                           type="file"
                           className="file-input file-input-bordered w-full max-w-xs"
+                          id="image"
+                          name="image"
+                          onChange={handleFileChange}
                         />
                       </div>
                     </div>
