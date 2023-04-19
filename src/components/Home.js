@@ -55,14 +55,17 @@ const Home = () => {
 
   const handleLike = async (tweetId) => {
     try {
-      const response = await fetch(`http://localhost:7000/api/v1/tweet/${tweetId}/like`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({}),
-      });
+      const response = await fetch(
+        `http://localhost:7000/api/v1/tweet/${tweetId}/like`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({}),
+        }
+      );
 
       const data = await response.json();
       console.log(data);

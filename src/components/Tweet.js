@@ -40,7 +40,7 @@ const Tweet = () => {
     }
   };
 
- async function handleLike(){
+  async function handleLike() {
     try {
       const response = await fetch(
         `http://localhost:7000/api/v1/tweet/${id}/like`,
@@ -60,7 +60,7 @@ const Tweet = () => {
     } catch (error) {
       console.error(error);
     }
-  };
+  }
 
   useEffect(() => {
     const fetchTweet = async () => {
