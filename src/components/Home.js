@@ -88,7 +88,7 @@ const Home = () => {
   return (
     <>
       <Nav />
-      <div className="h-max grid grid-cols-12 text-white pb-10">
+      <div className="h-auto grid grid-cols-12 text-white pb-10">
         <div className="col-span-3 ml-10">
           <div className="bg-[#1B2730] w-auto p-10 rounded-2xl">
             <p className="font-poppins font-bold text-2xl mb-10">
