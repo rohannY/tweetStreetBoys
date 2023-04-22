@@ -88,8 +88,8 @@ const Home = () => {
   return (
     <>
       <Nav />
-      <div className="h-auto grid grid-cols-12 text-white pb-10">
-        <div className="col-span-3 ml-10">
+      <div className="h-auto flex lg:grid lg:grid-cols-12 text-white pb-10">
+        <div className="hidden lg:block col-span-5 xl:col-span-3 ml-10 ">
           <div className="bg-[#1B2730] w-auto p-10 rounded-2xl">
             <p className="font-poppins font-bold text-2xl mb-10">
               Who to follow
@@ -171,7 +171,7 @@ const Home = () => {
             </div>
           ) : (
             tweets.map((tweet) => (
-              <div className="flex space-x-6 bg-[#1B2730] p-10 mt-5 w-full rounded-2xl flex-col">
+              <div className="flex space-x-6 bg-[#1B2730] p-10 mt-5 w-full rounded-2xl flex-col" key={tweet._id}>
                 <div className="flex w-full">
                   <img
                     src={tweet.owner.profile}
@@ -228,7 +228,7 @@ const Home = () => {
           )}
         </div>
 
-        <div className="col-span-3 mr-10">
+        <div className="hidden lg:block col-span-3 mr-10">
           <div className="bg-[#1B2730] w-full p-10 rounded-2xl">
             <p className="font-poppins font-bold text-2xl mb-10">
               What's Happening

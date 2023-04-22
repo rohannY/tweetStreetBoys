@@ -3,6 +3,7 @@ import hide from "../assets/hide.svg";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const SignIn = () => {
   const [email, setEmail] = useState();
@@ -13,6 +14,12 @@ const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (cookie.userId) {
+      navigate("/");
+    }
+  }, [navigate]);
 
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
@@ -106,7 +113,7 @@ const SignIn = () => {
                     />
                     <button
                       type="button"
-                      className="absolute right-0 mr-5 text-gray-600 focus:outline-none"
+                      className="absolute right-0 mt-1 mr-3 text-gray-600 focus:outline-none"
                       onClick={handleTogglePassword}
                     >
                       {showPassword ? <img src={show} /> : <img src={hide} />}

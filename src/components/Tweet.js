@@ -88,9 +88,9 @@ const Tweet = () => {
   return (
     <>
       <Nav />
-      <div className="h-auto grid grid-cols-12 text-white pb-10">
-        <div className="col-span-2 ml-10"></div>
-        <div className="col-span-8 h-auto w-full px-10">
+      <div className="h-auto sm:grid grid-cols-12 text-white pb-10">
+        <div className="col-span-1 lg:col-span-2 ml-10"></div>
+        <div className="sm:col-span-10 lg:col-span-8 h-auto w-full sm:px-10">
           {loading ? (
             <div className="p-10 mt-5 w-full rounded-2xl">
               <div className="status flex justify-center">
@@ -114,8 +114,8 @@ const Tweet = () => {
               </div>
             </div>
           ) : (
-            <div className="bg-[#1B2730] w-auto p-10 rounded-2xl mx-auto">
-              <div className="flex space-x-6 bg-[#1B2730] p-10 mt-5 w-full rounded-2xl flex-col">
+            <div className="bg-[#1B2730] w-auto p-3 lg:p-10 rounded-2xl mx-auto">
+              <div className="flex space-x-6 bg-[#1B2730] p-5 lg:p-10 mt-5 w-full rounded-2xl flex-col">
                 <div className="flex w-full">
                   <img
                     src={tweet.owner.profile}
@@ -132,11 +132,11 @@ const Tweet = () => {
                     </p>
                   </div>
                 </div>
-                <div className="h-auto px-12 mt-10 mb-5 font-figtree text-[#BEBEBE] font-light">
-                  <p className="text-xl">{tweet.text}</p>
+                <div className="h-auto lg:px-12 mt-10 mb-5 font-figtree text-[#BEBEBE] font-light">
+                  <p className="text-lg xl:text-xl">{tweet.text}</p>
                 </div>
 
-                <div className="px-10 pt-4 mb-5 flex space-x-5">
+                <div className="lg:px-10 pt-4 mb-5 flex space-x-5">
                   <div className=" flex space-x-3 cursor-pointer">
                     <img src={like} className="" />
                     <p
@@ -159,7 +159,7 @@ const Tweet = () => {
                     </p>
                   </div>
                 </div>
-                <div className="w-full px-12 my-5">
+                <div className="w-full pr-10 lg:px-12 my-5">
                   <textarea
                     className="h-28 w-full outline-none rounded-xl border border-gray-600 text-white bg-[#28343E] px-10 py-5 font-satoshi text-xl"
                     placeholder="Tweet Reply"
@@ -197,14 +197,14 @@ const Tweet = () => {
                   </div>
                 ) : (
                   comment.map((comment) => (
-                    <div className="px-12 w-full my-2">
+                    <div className="pr-10 lg:px-12 w-full my-2">
                       <div className="flex space-x-6 bg-[#1B2730] p-10 rounded-2xl flex-col border border-gray-400">
                         <div className="flex w-full">
                           <img
                             src={comment.owner.profile}
                             className="h-12 w-12 rounded-full"
                           />
-                          <div className="flex mx-4 my-3">
+                          <div className="flex flex-wrap mx-4 my-3">
                             <p className="font-inter text-xl">
                               {comment.owner.name}
                             </p>
@@ -216,7 +216,7 @@ const Tweet = () => {
                             </p>
                           </div>
                         </div>
-                        <div className="h-auto px-12 font-figtree text-[#BEBEBE] font-light">
+                        <div className="h-auto lg:px-12 font-figtree text-[#BEBEBE] font-light">
                           <p className="-ml-2">{comment.text}</p>
                         </div>
                       </div>
@@ -228,7 +228,7 @@ const Tweet = () => {
           )}
         </div>
 
-        <div className="col-span-2 mr-10"></div>
+        <div className="col-span-1 lg:col-span-2 mr-10"></div>
       </div>
     </>
   );

@@ -21,7 +21,7 @@ const Nav = () => {
   return (
     <>
       <div className="w-full bg-[#06141D] grid grid-cols-12 py-10">
-        <div className="col-span-3 ml-10 flex space-x-10">
+        <div className="col-span-5 xl:col-span-3 ml-10 flex space-x-10">
           <img src={twitter} className="h-12 w-12 mt-1" />
           <input
             type="text"
